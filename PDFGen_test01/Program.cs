@@ -74,7 +74,7 @@ namespace PDFGen_test01
 
             CreatePage();
 
-            string documentPath = $@"/Users/dannybolick/MainNas/PersonalRepo/GeneralTestProjectsMain/PdfSharpCoreFork/PDFGen_test01/bin/Debug/TEST.pdf";
+            string documentPath = $@"TEST.pdf";
             
          //   pdfd.Save(documentPath);
             
@@ -130,7 +130,7 @@ namespace PDFGen_test01
             
            // section.Headers = new HeadersFooters();
          //  ImageSource source = new MyImageSource();
-         string documentPath = $@"/Users/dannybolick/MainNas/PersonalRepo/GeneralTestProjectsMain/PdfSharpCoreFork/PDFGen_test01/bin/Debug/";
+         string documentPath = $@"/";
 
          var path =documentPath + "test2.png";
 //         var imagepath ="/Users/dannybolick/MainNas/Personal/Projects/PersonalProjects/varible_test/PDFGen_Test/PDFGen_Test_01/bin/Debug/netcoreapp3.1/";
@@ -414,8 +414,7 @@ namespace PDFGen_test01
      }
      public void SaveAsJpeg(MemoryStream ms)
      {
-         string path =
-             "/Users/dannybolick/MainNas/PersonalRepo/GeneralTestProjectsMain/PdfSharpCoreFork/PDFGen_test01/bin/Debug/output.png";
+         string path = "/Users/dannybolick/MainNas/PersonalRepo/GeneralTestProjectsMain/PdfSharpCoreFork/PDFGen_test01/bin/Debug/output.png";
          File.WriteAllBytes(path,ms.ToArray());
          var test = "";
      }
