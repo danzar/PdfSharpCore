@@ -14,6 +14,24 @@ namespace PDFGen_test01
 {
     class Program
     {
+        /*
+         * Header
+         *         
+         * To Address:
+         * From Address
+         * Table item
+         *   table header
+         *   table rows
+         *
+         * Totals
+         *
+         * Personal message
+         *
+         * Footer
+         * 
+         */
+        
+        
         static Document document;
 
         static Table table;
@@ -21,11 +39,49 @@ namespace PDFGen_test01
         
         static void Main(string[] args)
         {
-            document = new Document();
-            table = new Table();
-            addressFrame = new TextFrame();
-            CreateDocument();
+           CCReportTest.CreateReport();
+           
+            //CreateDocument();
             Console.WriteLine("Hello World!");
+        }
+        
+        private static void DefineDefaultStyles()
+        {
+            // Get the predefined style Normal.
+            var style = document.Styles["Normal"];
+            // Because all styles are derived from Normal, the next line changes the 
+            // font of the whole document. Or, more exactly, it changes the font of
+            // all styles and paragraphs that do not redefine the font.
+            style.Font.Name = "Arial";
+            style.Font.Size = Unit.FromPoint(8);
+            style.Font.Color = new Color(0x50,0x50,0x50);//new Color(0x0, 0x34, 0x63);
+            style.ParagraphFormat.LineSpacingRule = LineSpacingRule.Exactly;
+            style.ParagraphFormat.LineSpacing = Unit.FromMillimeter(5);
+            style.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+        }
+
+        private static void CreateHeader()
+        {
+           var lastSection = document.LastSection;
+           if (lastSection == null) lastSection = document.AddSection();
+           var header = lastSection.Headers.FirstPage;
+           var test = header.AddTextFrame();
+           
+           var pageHeader = lastSection.Headers.Primary;
+           pageHeader.AddParagraph("PARA GRAPH TEXT");
+           
+           lastSection.PageSetup.DifferentFirstPageHeaderFooter = false;
+         }
+
+        private static void CreateFooter()
+        {
+            var lastSection = document.LastSection;
+            if (lastSection == null) lastSection = document.AddSection();
+            var header = lastSection.Headers.FirstPage;
+            var test = header.AddTextFrame();
+           
+            var pageHeader = lastSection.Footers.Primary;
+            pageHeader.AddParagraph("FOOTER TEXT!!!!!"); 
         }
         
         
@@ -39,18 +95,20 @@ namespace PDFGen_test01
             ImageSource.ImageSourceImpl = new ImageSharpImageSource<SixLabors.ImageSharp.PixelFormats.Rgba32>();
             //ImageSource.ImageSourceImpl = new ImageSharpImageSource();
             
+            table = new Table();
+            addressFrame = new TextFrame();
             
             // Create a new MigraDoc document
             document = new Document();
             document.Info.Title = "A sample invoice";
             document.Info.Subject = "Demonstrates how to create an invoice.";
             document.Info.Author = "Stefan Lange";
-            
-            
+
+            DefineDefaultStyles();
            
            // var font = new XFont(FontResolver("sans-serif", 20));
             
-            Section testSection = document.AddSection();
+         //   Section testSection = document.AddSection();
           //   var textFrame = testSection.AddTextFrame();
           //   var paragraph = textFrame.AddParagraph();
           //  // paragraph.AddText("SOME VALUE");
@@ -63,25 +121,27 @@ namespace PDFGen_test01
             // paragraph.AddText("Cologne, ");
             // paragraph.AddDateField("dd.MM.yyyy");
             
-          Style style = document.Styles["Normal"];
-          style.Font.Name = "Verdana";
-          //style.Font.Name = "Verdana";
-          //style.Font.Name = "Times New Roman";
-          style.Font.Size = 9;
+          // Style style = document.Styles["Normal"];
+          // style.Font.Name = "Verdana";
+          // //style.Font.Name = "Verdana";
+          // //style.Font.Name = "Times New Roman";
+          // style.Font.Size = 9;
            
         
-            DefineStyles();
+           // DefineStyles();
 
+            CreateHeader();
+            CreateFooter();
             CreatePage();
 
             string documentPath = $@"TEST.pdf";
             
-         //   pdfd.Save(documentPath);
+     
             
-            FillContent();
+          //  FillContent();
           
            // Create a renderer for PDF that uses Unicode font encoding
-           PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer();
+           PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true);
 
            // Set the MigraDoc document
            pdfRenderer.Document = document;
